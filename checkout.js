@@ -34,7 +34,11 @@ const handlerSubmit = (e) => {
   orderIdDom.innerText = orderId;
 };
 
-document.addEventListener('DOMContentLoaded', handlerSubmit);
+document.addEventListener('readystatechange', (event) => {
+  if (document.readyState === 'complete') {
+    handlerSubmit();
+  }
+});
 
 function generateRandomString(length) {
   const characters =
