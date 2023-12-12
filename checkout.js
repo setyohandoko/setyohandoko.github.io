@@ -3,15 +3,15 @@ const urlParams = new URLSearchParams(queryString);
 
 // Get specific parameter values by key
 const promoCode = urlParams.get('promoCode'); // Retrieves 'promoCode'
-const orderIdDom = document.querySelector('#order-id');
+let orderId = '';
 
 const handlerSubmit = (e) => {
   window.dataLayer = window.dataLayer || [];
-  const orderId = generateRandomString(5);
+  orderId = generateRandomString(5);
   const payload = {
-    orderId:orderId,
+    orderId: orderId,
     orderDiscount: generateRandomDecimal(0, 10),
-    promoCode:promoCode,
+    promoCode: promoCode,
     items: [
       {
         category: 'HEADSET',
@@ -31,7 +31,6 @@ const handlerSubmit = (e) => {
   console.log('payload');
   console.log(payload);
   dataLayer.push(payload);
-  orderIdDom.innerText = orderId;
 };
 
 function generateRandomString(length) {
@@ -51,4 +50,8 @@ function generateRandomDecimal(min, max) {
   return (Math.random() * (max - min) + min).toFixed(2);
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const orderIdDom = document.querySelector('#order-id');
+  orderIdDom.textContent = orderId;
+});
 handlerSubmit();
