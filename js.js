@@ -25,7 +25,7 @@ const handlerSubmit = (e) => {
 
   dataLayer.push(payload);
   window.location.href = `checkout.html?orderId=${orderId}`;
-
+console.log(payload);
   e.preventDefault();
 };
 
