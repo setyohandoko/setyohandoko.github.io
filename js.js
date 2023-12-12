@@ -12,13 +12,13 @@ const handlerSubmit = (e) => {
         category: 'HEADSET',
         sku: generateRandomString(13),
         quantity: 5,
-        subtotal: generateRandomDecimal(0, 10),
+        subTotal: generateRandomDecimal(0, 10),
       },
       {
         category: 'HEADSET',
         sku: generateRandomString(13),
         quantity: 10,
-        subtotal: generateRandomDecimal(0, 10),
+        subTotal: generateRandomDecimal(0, 10),
       },
     ],
   };
