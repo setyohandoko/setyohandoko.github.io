@@ -9,9 +9,9 @@ const handlerSubmit = (e) => {
   window.dataLayer = window.dataLayer || [];
   const orderId = generateRandomString(5);
   const payload = {
-    orderId,
+    orderId:orderId,
     orderDiscount: generateRandomDecimal(0, 10),
-    promoCode,
+    promoCode:promoCode,
     items: [
       {
         category: 'HEADSET',
