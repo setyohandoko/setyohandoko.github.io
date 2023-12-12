@@ -34,12 +34,6 @@ const handlerSubmit = (e) => {
   orderIdDom.innerText = orderId;
 };
 
-document.addEventListener('readystatechange', (event) => {
-  if (document.readyState === 'complete') {
-    handlerSubmit();
-  }
-});
-
 function generateRandomString(length) {
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -56,3 +50,5 @@ function generateRandomString(length) {
 function generateRandomDecimal(min, max) {
   return (Math.random() * (max - min) + min).toFixed(2);
 }
+
+handlerSubmit();
