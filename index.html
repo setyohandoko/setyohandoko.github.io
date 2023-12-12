@@ -15,14 +15,14 @@
     <script>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
         var f = d.getElementsByTagName(s)[0],
           j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
+          dl = l != 'dataLayer' ? '&l=' + l : '';
         j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
         f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-TPQVTG86");
+      })(window, document, 'script', 'dataLayer', 'GTM-TPQVTG86');
     </script>
     <!-- End Google Tag Manager -->
   </head>
@@ -31,15 +31,10 @@
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container">
         <a class="navbar-brand" href="#">Doko Shop</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation" / >
       </div>
     </nav>
     <!-- end header -->
@@ -48,10 +43,11 @@
     <main>
       <div class="container my-5">
         <h3>Welcome To Doko Shop</h3>
-        <form id="my-form" class="w-50" action="checkout.html">
+        <form id="my-form" class="w-50" action="checkout.html" method="GET">
           <div class="my-3">
             <label for="in-promocode" class="form-label">Promo Code</label>
             <input
+              name="promoCode"
               type="text"
               class="form-control text-uppercase"
               id="in-promocode"
@@ -67,37 +63,35 @@
     <!-- end content -->
 
     <!-- footer -->
-    <footer class="container">
-      <footer class="py-5">
-        <div
-          class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
-        >
-          <p>&copy; 2022 Company, Inc. All rights reserved.</p>
-          <ul class="list-unstyled d-flex">
-            <li class="ms-3">
-              <a class="link-dark" href="#">
-                <svg class="bi" width="24" height="24">
-                  <use xlink:href="#twitter" />
-                </svg>
-              </a>
-            </li>
-            <li class="ms-3">
-              <a class="link-dark" href="#">
-                <svg class="bi" width="24" height="24">
-                  <use xlink:href="#instagram" />
-                </svg>
-              </a>
-            </li>
-            <li class="ms-3">
-              <a class="link-dark" href="#"
-                ><svg class="bi" width="24" height="24">
-                  <use xlink:href="#facebook" />
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </footer>
+    <footer class="py-5 container">
+      <div
+        class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
+      >
+        <p>&copy; 2022 Company, Inc. All rights reserved.</p>
+        <ul class="list-unstyled d-flex">
+          <li class="ms-3">
+            <a class="link-dark" href="#">
+              <svg class="bi" width="24" height="24">
+                <use xlink:href="#twitter" />
+              </svg>
+            </a>
+          </li>
+          <li class="ms-3">
+            <a class="link-dark" href="#">
+              <svg class="bi" width="24" height="24">
+                <use xlink:href="#instagram" />
+              </svg>
+            </a>
+          </li>
+          <li class="ms-3">
+            <a class="link-dark" href="#"
+              ><svg class="bi" width="24" height="24">
+                <use xlink:href="#facebook" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
     </footer>
     <!-- end footer -->
     <noscript>
@@ -115,7 +109,5 @@
     ></script>
 
     <script src="js.js"></script>
-
-    
   </body>
 </html>
