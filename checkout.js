@@ -11,7 +11,7 @@ const handlerSubmit = (e) => {
   const payload = {
     orderId: orderId,
     orderDiscount: generateRandomDecimal(0, 10),
-    promoCode: promoCode,
+    orderPromoCode: promoCode,
     items: [
       {
         category: 'HEADSET',
