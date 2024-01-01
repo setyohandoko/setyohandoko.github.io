@@ -1,9 +1,15 @@
+window.dataLayer = window.dataLayer || [];
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 // Get specific parameter values by key
 const promoCode = urlParams.get('promoCode'); // Retrieves 'promoCode'
 let orderId = '';
+
+function gtag() {
+  dataLayer.push(arguments);
+}
 
 const handlerSubmit = (e) => {
   window.dataLayer = window.dataLayer || [];
@@ -31,6 +37,10 @@ const handlerSubmit = (e) => {
   console.log('payload');
   console.log(payload);
   dataLayer.push(payload);
+
+  console.log('pushing to GA');
+  const clickId = localStorage.getItem('clickId');
+  gtag('event', clickId, payload);
 };
 
 function generateRandomString(length) {
@@ -54,4 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const orderIdDom = document.querySelector('#order-id');
   orderIdDom.textContent = orderId;
 });
+
+gtag('js', new Date());
+gtag('config', 'G-R16VBGLLYM');
 handlerSubmit();
