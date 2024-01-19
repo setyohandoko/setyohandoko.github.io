@@ -14,8 +14,14 @@ function gtag() {
 const handlerSubmit = (e) => {
   window.dataLayer = window.dataLayer || [];
   orderId = generateRandomString(5);
+  
+  console.log('pushing to GA');
+  const clickId = localStorage.getItem('clickId');
+  gtag('event', clickId, payload);
+
   const payload = {
     orderId: orderId,
+    clickId: clickId,
     orderDiscount: generateRandomDecimal(0, 10),
     orderPromoCode: promoCode,
     items: [
@@ -37,10 +43,6 @@ const handlerSubmit = (e) => {
   console.log('payload');
   console.log(payload);
   dataLayer.push(payload);
-
-  console.log('pushing to GA');
-  const clickId = localStorage.getItem('clickId');
-  gtag('event', clickId, payload);
 };
 
 function generateRandomString(length) {
