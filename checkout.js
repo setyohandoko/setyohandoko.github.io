@@ -20,7 +20,7 @@ const handlerSubmit = (e) => {
 
   const payload = {
     orderId: orderId,
-    clickId: clickId,
+    clickid: clickId,
     orderDiscount: generateRandomDecimal(0, 10),
     orderPromoCode: promoCode,
     items: [
@@ -38,7 +38,7 @@ const handlerSubmit = (e) => {
       },
     ],
   };
-  
+
   gtag('event', clickId, payload);
 
   console.log('payload');
