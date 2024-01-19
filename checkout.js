@@ -17,7 +17,6 @@ const handlerSubmit = (e) => {
   
   console.log('pushing to GA');
   const clickId = localStorage.getItem('clickId');
-  gtag('event', clickId, payload);
 
   const payload = {
     orderId: orderId,
@@ -39,6 +38,8 @@ const handlerSubmit = (e) => {
       },
     ],
   };
+  
+  gtag('event', clickId, payload);
 
   console.log('payload');
   console.log(payload);
