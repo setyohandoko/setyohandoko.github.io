@@ -20,7 +20,7 @@ const handlerSubmit = (e) => {
 
   const payload = {
     orderId: orderId,
-    clickid: clickId,
+    clickId: clickId,
     orderDiscount: generateRandomDecimal(0, 10),
     orderPromoCode: promoCode,
     items: [
