@@ -107,6 +107,8 @@
             lastName: document.getElementById('lastName').value,
           };
           const rsCode = localStorage.getItem('rsCode');
+          const jwt = localStorage.getItem('_saasquatch');
+
           console.log('refered Code: ' + rsCode);
           const payload = {
             user: {
@@ -117,6 +119,7 @@
               lastName: user.lastName,
               referredByCodes: [rsCode],
             },
+            jwt,
           };
           console.log(payload);
 
