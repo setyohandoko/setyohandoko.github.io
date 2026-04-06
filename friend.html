@@ -138,33 +138,30 @@
 
         const hashed = await sha1(email);
         const rsCode = localStorage.getItem('rsCode');
+        const payload = {
+          orderId: 'ORDER-' + Date.now(),
+          customerId: email,
+          customerEmail: hashed,
+          customerStatus: 'NEW',
+          currencyCode: 'USD',
+          customerCountry: 'US',
+          orderPromoCode: rsCode || '',
+          orderDiscount: 0,
+          items: [
+            {
+              subTotal: 50,
+              category: 'Demo',
+              sku: 'sku-1',
+              quantity: 1,
+              name: 'Demo Product',
+            },
+          ],
+        };
 
-        ire(
-          'trackConversion',
-          54063,
-          {
-            orderId: 'ORDER-' + Date.now(),
-            customerId: email,
-            customerEmail: hashed,
-            customerStatus: 'NEW',
-            currencyCode: 'USD',
-            customerCountry: 'US',
-            orderPromoCode: rsCode || '',
-            orderDiscount: 0,
-            items: [
-              {
-                subTotal: 50,
-                category: 'Demo',
-                sku: 'sku-1',
-                quantity: 1,
-                name: 'Demo Product',
-              },
-            ],
-          },
-          {
-            verifySiteDefinitionMatch: true,
-          },
-        );
+        console.log(payload);
+        ire('trackConversion', 54063, payload, {
+          verifySiteDefinitionMatch: true,
+        });
 
         console.log('✅ Conversion fired');
       }
