@@ -1,112 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Setyo Gaming Store</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
+    <title>Referrer Page (With JWT)</title>
 
-    <!-- Google Tag Manager -->
+    <!-- ================= JWT LOADER (WAJIB DI ATAS) ================= -->
     <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-TPQVTG86");
+      // fetch JWT dari backend
+      async function loadImpactJWT() {
+        try {
+          const res = await fetch('/impact/jwt'); // endpoint backend lu
+          const data = await res.json();
+
+          window.impactToken = data.token;
+
+          console.log('✅ JWT loaded');
+        } catch (err) {
+          console.error('❌ Failed load JWT', err);
+        }
+      }
     </script>
-    <!-- End Google Tag Manager -->
+
+    <!-- ================= UTT ================= -->
+    <script>
+      (function (a, b, c, d, e, f, g) {
+        e['ire_o'] = c;
+        e[c] =
+          e[c] ||
+          function () {
+            (e[c].a = e[c].a || []).push(arguments);
+          };
+        f = d.createElement(b);
+        g = d.getElementsByTagName(b)[0];
+        f.async = 1;
+        f.src = a;
+        g.parentNode.insertBefore(f, g);
+      })(
+        'https://utt.impactcdn.com/A6072491-e363-40fa-8208-09e20a42353865535.js',
+        'script',
+        'ire',
+        document,
+        window,
+      );
+    </script>
   </head>
+
   <body>
-    <!-- header -->
-    <nav class="navbar navbar-expand-lg bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">Doko Gaming Store</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation" / >
-      </div>
-    </nav>
-    <!-- end header -->
+    <h2>👤 Referrer (User A - VERIFIED)</h2>
 
-    <!-- content -->
-    <main>
-      <div class="container my-5">
-        <h3>Welcome To Doko Gaming Store 1</h3>
-        <form id="my-form" class="w-50" action="checkout.html" method="GET">
-          <div class="my-3">
-            <label for="in-promocode" class="form-label">Promo Code</label>
-            <input
-              name="promoCode"
-              type="text"
-              class="form-control"
-              id="in-promocode"
-              placeholder="Please input your Promo Code here"
-            />
-          </div>
+    <p>Status JWT: <span id="jwtStatus">Loading...</span></p>
 
-          <button type="submit" class="btn btn-primary">Checkout</button>
-        </form>
-        <a href="https://luxuryescapes.sjv.io/c/1111/1936447/23356?subId3=224439&p.impacttest=1">Luxury Escapes Test</a>
-      </div>
-    </main>
-    <!-- end content -->
+    <!-- ================= WIDGET ================= -->
+    <impact-popup widget="p/32011/w/referrerWidget">
+      <button>Open Referral Widget</button>
+    </impact-popup>
 
-    <!-- footer -->
-    <footer class="py-5 container">
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top"
-      >
-        <p>&copy; 2023 Setyo Handoko. </br> All rights reserved.</p>
-        <ul class="list-unstyled d-flex">
-          <li class="ms-3">
-            <a class="link-dark" href="#">
-              <svg class="bi" width="24" height="24">
-                <use xlink:href="#twitter" />
-              </svg>
-            </a>
-          </li>
-          <li class="ms-3">
-            <a class="link-dark" href="#">
-              <svg class="bi" width="24" height="24">
-                <use xlink:href="#instagram" />
-              </svg>
-            </a>
-          </li>
-          <li class="ms-3">
-            <a class="link-dark" href="#"
-              ><svg class="bi" width="24" height="24">
-                <use xlink:href="#facebook" />
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </footer>
-    <!-- end footer -->
-    <script src="./index.js"></script>
-    <noscript>
-      <iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-TPQVTG86"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe>
-    </noscript>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
+    <p>👉 Copy link dari widget → buka di incognito → lanjut ke friend.html</p>
+
+    <script>
+      /* ================= INIT ================= */
+
+      (async function init() {
+        await loadImpactJWT();
+
+        // kasih indikator UI
+        if (window.impactToken) {
+          document.getElementById('jwtStatus').innerText = 'READY ✅';
+        } else {
+          document.getElementById('jwtStatus').innerText = 'FAILED ❌';
+        }
+      })();
+    </script>
   </body>
 </html>
