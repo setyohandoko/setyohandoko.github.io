@@ -106,21 +106,26 @@
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
           };
+          const rsCode = localStorage.getItem('rsCode');
+          console.log('refered Code: ' + rsCode);
+          const payload = {
+            user: {
+              id: user.email,
+              accountId: user.email,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              referredByCodes: [rsCode],
+            },
+          };
+          console.log(payload);
 
           console.log('Registering user:', user);
 
           window.impactOnReady = function () {
             impact
               .api()
-              .upsertUser({
-                user: {
-                  id: user.email,
-                  accountId: user.email,
-                  email: user.email,
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                },
-              })
+              .upsertUser(payload)
               .then((res) => console.log('✅ Registered', res))
               .catch((err) => console.error(err));
           };
