@@ -94,11 +94,25 @@
           localStorage.getItem('rsCode') || '';
       }
 
+      function waitImpactReady() {
+        console.log('masuk sini');
+        return new Promise((resolve) => {
+          if (window.impact && impact.api) {
+            return resolve();
+          }
+
+          window.impactOnReady = function () {
+            console.log('sudah ready');
+            resolve();
+          };
+        });
+      }
+
       /* ================= REGISTER ================= */
 
       document
         .getElementById('registerForm')
-        .addEventListener('submit', function (e) {
+        .addEventListener('submit', async function (e) {
           e.preventDefault();
 
           const user = {
@@ -109,7 +123,6 @@
           const rsCode = localStorage.getItem('rsCode');
           const jwt = localStorage.getItem('_saasquatch');
 
-          console.log('refered Code: ' + rsCode);
           const payload = {
             user: {
               id: user.email,
@@ -121,17 +134,17 @@
             },
             jwt,
           };
-          console.log(payload);
 
-          console.log('Registering user:', user);
+          console.log('Registering user:', payload);
 
-          window.impactOnReady = function () {
-            impact
-              .api()
-              .upsertUser(payload)
-              .then((res) => console.log('✅ Registered', res))
-              .catch((err) => console.error(err));
-          };
+          await waitImpactReady();
+
+          // Langsung panggil, karena SDK sudah pasti ready
+          impact
+            .api()
+            .upsertUser(payload)
+            .then((res) => console.log('✅ Registered', res))
+            .catch((err) => console.error(err));
         });
 
       /* ================= CONVERSION ================= */
