@@ -18,7 +18,10 @@
         style="width: 320px"
       />
       <br /><br />
-      <button onclick="setLocal()">Set URL</button>
+
+      <button onclick="applyHost()">Apply Host</button>
+
+      <p>Active Host: <span id="activeHost">-</span></p>
     </div>
 
     <hr />
@@ -81,12 +84,43 @@
         return localStorage.getItem('impact_host') || window.location.origin;
       }
 
+      function updateActiveHost() {
+        const host =
+          localStorage.getItem('impact_host') || window.location.origin;
+
+        document.getElementById('activeHost').innerText = host;
+      }
+
+      function applyHost() {
+        const input = document.getElementById('hostUrl')?.value?.trim();
+
+        if (!input) {
+          alert('Isi host URL dulu bro');
+          return;
+        }
+
+        localStorage.setItem('impact_host', input);
+        updateActiveHost();
+
+        log('✅ Host applied', { host: input });
+      }
+
       function setLocal() {
-        document.getElementById('hostUrl').value = 'http://localhost:3000';
+        const url = 'http://localhost:3000';
+        document.getElementById('hostUrl').value = url;
+        localStorage.setItem('impact_host', url);
+        updateActiveHost();
+
+        log('✅ Host set to Localhost', { host: url });
       }
 
       function setProd() {
-        document.getElementById('hostUrl').value = 'https://api.satuakun.id';
+        const url = 'https://api.satuakun.id';
+        document.getElementById('hostUrl').value = url;
+        localStorage.setItem('impact_host', url);
+        updateActiveHost();
+
+        log('✅ Host set to Production', { host: url });
       }
 
       /* ================= UTILS ================= */
@@ -259,11 +293,12 @@
       document.addEventListener('DOMContentLoaded', () => {
         captureReferral();
 
-        // load saved host
         const savedHost = localStorage.getItem('impact_host');
         if (savedHost) {
           document.getElementById('hostUrl').value = savedHost;
         }
+
+        updateActiveHost();
 
         const form = document.getElementById('registerForm');
         if (form) {
