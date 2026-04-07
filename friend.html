@@ -1,69 +1,94 @@
 <!doctype html>
 <html>
   <head>
-    <title>Friend Page</title>
-
-    <!-- UTT -->
-    <script>
-      (function (a, b, c, d, e, f, g) {
-        e['ire_o'] = c;
-        e[c] =
-          e[c] ||
-          function () {
-            (e[c].a = e[c].a || []).push(arguments);
-          };
-        f = d.createElement(b);
-        g = d.getElementsByTagName(b)[0];
-        f.async = 1;
-        f.src = a;
-        g.parentNode.insertBefore(f, g);
-      })(
-        'https://utt.impactcdn.com/A6072491-e363-40fa-8208-09e20a42353865535.js',
-        'script',
-        'ire',
-        document,
-        window,
-      );
-    </script>
+    <title>Referred User (Friend)</title>
+    <meta charset="UTF-8" />
   </head>
 
   <body>
-    <h2>🧑 Referred User (User B)</h2>
+    <h2>👥 Referred User (Friend Page)</h2>
 
-    <!-- ================= REGISTER FORM ================= -->
-    <h3>Register</h3>
-
-    <form id="registerForm">
+    <!-- ================= HOST CONFIG ================= -->
+    <div>
+      <label>Backend Host URL</label><br />
       <input
         type="text"
-        id="firstName"
-        placeholder="First Name"
-        required
-      /><br /><br />
-      <input
-        type="text"
-        id="lastName"
-        placeholder="Last Name"
-        required
-      /><br /><br />
-      <input type="email" id="email" placeholder="Email" required /><br /><br />
-
-      <label>Referral Code (rsCode)</label><br />
-      <input type="text" id="rsCode" readonly /><br /><br />
-
-      <button type="submit">Register</button>
-    </form>
+        id="hostUrl"
+        placeholder="http://localhost:3000"
+        style="width: 320px"
+      />
+      <br /><br />
+      <button onclick="setLocal()">Set URL</button>
+    </div>
 
     <hr />
 
-    <button onclick="doConversion()">Simulate Conversion</button>
+    <!-- ================= FORM ================= -->
+    <form id="registerForm">
+      <div>
+        <label>Email</label><br />
+        <input type="email" id="email" required />
+      </div>
+
+      <div>
+        <label>First Name</label><br />
+        <input type="text" id="firstName" />
+      </div>
+
+      <div>
+        <label>Last Name</label><br />
+        <input type="text" id="lastName" />
+      </div>
+
+      <div>
+        <label>Referral Code</label><br />
+        <input type="text" id="rsCode" readonly />
+      </div>
+
+      <br />
+      <button type="submit">Register</button>
+    </form>
+
+    <br />
+
+    <!-- ================= CONVERSION ================= -->
+    <button onclick="doConversion()">Simulate Purchase</button>
 
     <hr />
 
     <h3>Debug</h3>
-    <p>_saasquatch: <span id="sq"></span></p>
+    <pre id="debug"></pre>
 
+    <!-- ================= SCRIPT ================= -->
     <script>
+      /* ================= LOGGER ================= */
+      function log(msg, data) {
+        console.log(msg, data || '');
+        document.getElementById('debug').innerText =
+          msg + '\n' + JSON.stringify(data || {}, null, 2);
+      }
+
+      /* ================= HOST CONFIG ================= */
+
+      function getBaseUrl() {
+        const input = document.getElementById('hostUrl')?.value?.trim();
+
+        if (input) {
+          localStorage.setItem('impact_host', input);
+          return input;
+        }
+
+        return localStorage.getItem('impact_host') || window.location.origin;
+      }
+
+      function setLocal() {
+        document.getElementById('hostUrl').value = 'http://localhost:3000';
+      }
+
+      function setProd() {
+        document.getElementById('hostUrl').value = 'https://api.satuakun.id';
+      }
+
       /* ================= UTILS ================= */
 
       function getParam(name) {
@@ -78,100 +103,141 @@
           .join('');
       }
 
-      /* ================= CAPTURE REFERRAL ================= */
+      function loadUTT() {
+        return new Promise((resolve) => {
+          (function (a, b, c, d, e, f, g) {
+            e['ire_o'] = c;
+            e[c] =
+              e[c] ||
+              function () {
+                (e[c].a = e[c].a || []).push(arguments);
+              };
 
-      function captureReferral() {
-        const sq = getParam('_saasquatch');
-        const rsCode = getParam('rsCode');
+            window.impactOnReady = function () {
+              resolve();
+            };
 
-        if (sq) localStorage.setItem('_saasquatch', sq);
-        if (rsCode) localStorage.setItem('rsCode', rsCode);
-
-        document.getElementById('sq').innerText =
-          localStorage.getItem('_saasquatch') || '-';
-
-        document.getElementById('rsCode').value =
-          localStorage.getItem('rsCode') || '';
+            f = d.createElement(b);
+            g = d.getElementsByTagName(b)[0];
+            f.async = 1;
+            f.src = a;
+            g.parentNode.insertBefore(f, g);
+          })(
+            'https://utt.impactcdn.com/A6072491-e363-40fa-8208-09e20a42353865535.js',
+            'script',
+            'ire',
+            document,
+            window,
+          );
+        });
       }
 
-      function waitImpactReady() {
-        console.log('masuk sini');
-        return new Promise((resolve) => {
-          if (window.impact && impact.api) {
-            return resolve();
-          }
+      /* ================= REFERRAL ================= */
 
-          window.impactOnReady = function () {
-            console.log('sudah ready');
-            resolve();
-          };
-        });
+      function captureReferral() {
+        const rsCode = getParam('rsCode');
+
+        if (rsCode) {
+          localStorage.setItem('rsCode', rsCode);
+        }
+
+        const saved = localStorage.getItem('rsCode');
+
+        const input = document.getElementById('rsCode');
+        if (input) input.value = saved || '';
       }
 
       /* ================= REGISTER ================= */
 
-      document
-        .getElementById('registerForm')
-        .addEventListener('submit', async function (e) {
-          e.preventDefault();
+      async function doRegister(e) {
+        e.preventDefault();
 
-          const user = {
-            email: document.getElementById('email').value,
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-          };
-          const rsCode = localStorage.getItem('rsCode');
-          const jwt = localStorage.getItem('_saasquatch');
+        const email = document.getElementById('email')?.value;
+        const firstName = document.getElementById('firstName')?.value;
+        const lastName = document.getElementById('lastName')?.value;
+
+        if (!email) {
+          alert('Email wajib diisi');
+          return;
+        }
+
+        const rsCode = localStorage.getItem('rsCode');
+
+        const user = {
+          email,
+          firstName,
+          lastName,
+          referredByCodes: rsCode ? [rsCode] : [],
+        };
+
+        try {
+          const baseUrl = getBaseUrl();
+
+          log('🚀 Register → ' + baseUrl, user);
+
+          const res = await fetch(`${baseUrl}/impact/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user),
+          });
+
+          const data = await res.json();
+
+          if (!data.success) throw new Error(data.message);
+
+          window.impactToken = data.token;
+
+          log('✅ JWT received');
+
+          await loadUTT();
+
+          log('✅ Impact ready');
 
           const payload = {
             user: {
-              id: user.email,
-              accountId: user.email,
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              referredByCodes: [rsCode],
+              id: email,
+              accountId: email,
+              email,
+              firstName,
+              lastName,
+              referredByCodes: user.referredByCodes,
             },
-            jwt,
           };
 
-          console.log('Registering user:', payload);
+          const resImpact = await impact.api().upsertUser(payload);
 
-          await waitImpactReady();
+          log('✅ Registered to Impact', resImpact);
 
-          // Langsung panggil, karena SDK sudah pasti ready
-          impact
-            .api()
-            .upsertUser(payload)
-            .then((res) => console.log('✅ Registered', res))
-            .catch((err) => console.error(err));
-        });
+          alert('Register sukses 🚀');
+        } catch (err) {
+          console.error(err);
+          log('❌ Error', err.message);
+          alert('Register gagal');
+        }
+      }
 
       /* ================= CONVERSION ================= */
 
       async function doConversion() {
-        const email = document.getElementById('email').value;
+        const email = document.getElementById('email')?.value;
 
         if (!email) {
-          alert('Isi email dulu bro!');
+          alert('Isi email dulu!');
           return;
         }
 
         const hashed = await sha1(email);
         const rsCode = localStorage.getItem('rsCode');
+
         const payload = {
           orderId: 'ORDER-' + Date.now(),
           customerId: email,
           customerEmail: hashed,
-          customerStatus: 'NEW',
-          currencyCode: 'USD',
-          customerCountry: 'US',
           orderPromoCode: rsCode || '',
-          orderDiscount: 0,
+          currencyCode: 'USD',
           items: [
             {
               subTotal: 50,
-              category: 'Demo',
               sku: 'sku-1',
               quantity: 1,
               name: 'Demo Product',
@@ -179,17 +245,31 @@
           ],
         };
 
-        console.log(payload);
+        log('🛒 Conversion', payload);
+
         ire('trackConversion', 54063, payload, {
           verifySiteDefinitionMatch: true,
         });
 
-        console.log('✅ Conversion fired');
+        alert('Conversion fired 🚀');
       }
 
       /* ================= INIT ================= */
 
-      captureReferral();
+      document.addEventListener('DOMContentLoaded', () => {
+        captureReferral();
+
+        // load saved host
+        const savedHost = localStorage.getItem('impact_host');
+        if (savedHost) {
+          document.getElementById('hostUrl').value = savedHost;
+        }
+
+        const form = document.getElementById('registerForm');
+        if (form) {
+          form.addEventListener('submit', doRegister);
+        }
+      });
     </script>
   </body>
 </html>
